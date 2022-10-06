@@ -32,7 +32,7 @@ const appendTodos = (text) => {
     setTodos(newTodos);
     paintTodos();
 }
-
+//
 
 // 삭제 이벤트 처리 함수
 const deleteTodo = (todoId) => {

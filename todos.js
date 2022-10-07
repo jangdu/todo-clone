@@ -1,12 +1,14 @@
 const todoInputElem = document.querySelector('.todo-input');
 const todoListElem = document.querySelector('.todo-list');
-
-
 // 전체 투두 체크 엘리먼트
 const completeAllBtnElem = document.querySelector('.complete-all-btn');
-
 // 남은할일 개수 표시
 const leftItemsElem = document.querySelector('.left-items');
+
+const showAllBtnElem = document.querySelector('.show-all-btn selected');
+const showActiveBtnElem = document.querySelector('.show-active-btn');
+const showCompletedBtnElem = document.querySelector('.show-completed-btn');
+const clearCompletedBtnElem = document.querySelector('.clear-completed-btn');
 
 // 완료되지 않은 할 일 리스트반환
 const getActiveTodos = () => {
@@ -32,7 +34,6 @@ const getAllTodos =  () => {
 }
 
 // * 전체표시 구현
-
 let isAllCompleted = false; // 초기 전체 투두체크여부
 
 const setIsAllCompleted = (bool) => { isAllCompleted = bool };

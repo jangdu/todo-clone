@@ -5,10 +5,10 @@ const completeAllBtnElem = document.querySelector('.complete-all-btn');
 // 남은할일 개수 표시
 const leftItemsElem = document.querySelector('.left-items');
 
-const showAllBtnElem = document.querySelector('.show-all-btn selected');
-const showActiveBtnElem = document.querySelector('.show-active-btn');
-const showCompletedBtnElem = document.querySelector('.show-completed-btn');
-const clearCompletedBtnElem = document.querySelector('.clear-completed-btn');
+const showAllBtnElem = document.querySelector('.show-all-btn selected');    // 전체 투두리스트
+const showActiveBtnElem = document.querySelector('.show-active-btn');   // 완료되지 않은 리스트
+const showCompletedBtnElem = document.querySelector('.show-completed-btn'); // 완료된 리스트
+const clearCompletedBtnElem = document.querySelector('.clear-completed-btn');   // 완료된거 삭제
 
 // 완료되지 않은 할 일 리스트반환
 const getActiveTodos = () => {
@@ -22,6 +22,24 @@ const setLeftItems = () => {
 
 let todos = [];
 let id = 0;
+
+// 
+let currentShowType = 'all';    // all or active or complet
+const setCurrentShowType = (newShowType) => currentShowType = newShowType;
+
+const onClickShowTodosType = (e) => {
+    const currentBtnElem = e.target;
+    const newShowType = currentBtnElem.dataset.type;
+    if (currentShowType === newShowType) return;
+
+    const preBtnElem = document.querySelector(`.show-${currentShowType}-btn`);
+    preBtnElem.classList.remove('selected');
+
+    currentBtnElem.classList.add('selected');
+    setCurrentShowType(newShowType);
+
+    paintTodos();
+}
 
 // 할일 추가하기
 // todos 초기화
@@ -154,6 +172,7 @@ const updateTodo = (text, todoId) => {
 
 
 
+
 const paintTodos = () => {
     // html에 추가된 할 일 그리기
     todoListElem.innerHTML = null; // todoListElem html 초기화
@@ -212,6 +231,12 @@ const init = () => {
             //todoInputElem.value = ''; 할때 text칸이 비워지지 않음
         }
     })
+    
+    showAllBtnElem.addEventListener('click', onClickShowTodosType);
+    showActiveBtnElem.addEventListener('click', onClickShowTodosType);
+    showCompletedBtnElem.addEventListener('click', onClickShowTodosType);
+    clearCompletedBtnElem.addEventListener('click', clearComplietedTodos);
+
     completeAllBtnElem.addEventListener('click', onClickCompleteAll); // 전체완료 클릭 이벤트 리스너
     setLeftItems();
 }

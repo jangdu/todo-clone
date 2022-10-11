@@ -5,7 +5,8 @@ const completeAllBtnElem = document.querySelector('.complete-all-btn');
 // 남은할일 개수 표시
 const leftItemsElem = document.querySelector('.left-items');
 
-const showAllBtnElem = document.querySelector('.show-all-btn selected');    // 전체 투두리스트
+const showAllBtnElem = document.querySelector('.show-all-btn');    // 전체 투두리스트
+showAllBtnElem.classList.add('selected');
 const showActiveBtnElem = document.querySelector('.show-active-btn');   // 완료되지 않은 리스트
 const showCompletedBtnElem = document.querySelector('.show-completed-btn'); // 완료된 리스트
 const clearCompletedBtnElem = document.querySelector('.clear-completed-btn');   // 완료된거 삭제
@@ -176,8 +177,24 @@ const updateTodo = (text, todoId) => {
 const paintTodos = () => {
     // html에 추가된 할 일 그리기
     todoListElem.innerHTML = null; // todoListElem html 초기화
-    const allTodos = getAllTodos(); // todos배열
 
+    switch (currentShowType) {
+        case 'all':
+            const allTodos = getAllTodos();
+            allTodos.forEach(todo => {paintTodo(todo);});
+            break;
+        case 'active':
+            const activeTodos = getActiveTodos();
+            activeTodos.forEach(todo => {paintTodo(todo);});
+            break;
+        case 'completed':
+            const completedTodos = getCompletedTodos();
+            completedTodos.forEach(todo => {paintTodo(todo);});
+        default:
+            break;
+    }
+}
+const paintTodo = (todo) => {
     // "todo-item"에 해당 html을 그려 리스트에 추가
     /*          <li class="todo-item checked" data-id="n">
                     <div class="checkbox">✔</div>
@@ -186,39 +203,37 @@ const paintTodos = () => {
                 </li>
     */
    //numbers.forEach(A => fucn(A));
-    allTodos.forEach(todo => {
-        const todoItemElem = document.createElement('li');
-        todoItemElem.classList.add('todo-item');
+    const todoItemElem = document.createElement('li');
+    todoItemElem.classList.add('todo-item');
 
-        todoItemElem.setAttribute('data-id', todo.id);
+    todoItemElem.setAttribute('data-id', todo.id);
 
-        const checkboxElem = document.createElement('div');
-        checkboxElem.classList.add('checkbox');
-        checkboxElem.addEventListener('click', () => completeTodo(todo.id));
+    const checkboxElem = document.createElement('div');
+    checkboxElem.classList.add('checkbox');
+    checkboxElem.addEventListener('click', () => completeTodo(todo.id));
 
-        const todoElem = document.createElement('div');
-        todoElem.classList.add('todo');
-        // 더블클릭 이벤트
-        todoElem.addEventListener('dblclick', (event) => onDbclickTodo(event, todo.id)) 
-        todoElem.innerText = todo.content;
+    const todoElem = document.createElement('div');
+    todoElem.classList.add('todo');
+    // 더블클릭 이벤트
+    todoElem.addEventListener('dblclick', (event) => onDbclickTodo(event, todo.id)) 
+    todoElem.innerText = todo.content;
 
-        const delBtnElem = document.createElement('button');
-        delBtnElem.classList.add('delBtn');
+    const delBtnElem = document.createElement('button');
+    delBtnElem.classList.add('delBtn');
         // 할일 목록 삭제 이벤트 생성
-        delBtnElem.addEventListener('click', () => deleteTodo(todo.id));
-        delBtnElem.innerText = "X";
+    delBtnElem.addEventListener('click', () => deleteTodo(todo.id));
+    delBtnElem.innerText = "X";
 
-        if(todo.isCompleted){
-            todoItemElem.classList.add('checked');
-            checkboxElem.innerText = "✔";
-        }
+    if(todo.isCompleted){
+        todoItemElem.classList.add('checked');
+        checkboxElem.innerText = "✔";
+    }
 
-        todoItemElem.appendChild(checkboxElem);
-        todoItemElem.appendChild(todoElem);
-        todoItemElem.appendChild(delBtnElem);
+    todoItemElem.appendChild(checkboxElem);
+    todoItemElem.appendChild(todoElem);
+    todoItemElem.appendChild(delBtnElem);
 
-        todoListElem.appendChild(todoItemElem);
-    })
+    todoListElem.appendChild(todoItemElem);
 }
 
 
@@ -235,7 +250,7 @@ const init = () => {
     showAllBtnElem.addEventListener('click', onClickShowTodosType);
     showActiveBtnElem.addEventListener('click', onClickShowTodosType);
     showCompletedBtnElem.addEventListener('click', onClickShowTodosType);
-    clearCompletedBtnElem.addEventListener('click', clearComplietedTodos);
+    //clearCompletedBtnElem.addEventListener('click', clearComplietedTodos);
 
     completeAllBtnElem.addEventListener('click', onClickCompleteAll); // 전체완료 클릭 이벤트 리스너
     setLeftItems();

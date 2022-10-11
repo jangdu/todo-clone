@@ -71,7 +71,7 @@ const incompleteAll = () => {
 
 // 전체 check여부
 const checkIsAllCompleted = () => {
-    if(getAllTodos.length === getCompletedTodos().length ){
+    if(getAllTodos.length === getCompletedTodos().length && getAllTodos.length !== 0){
         setIsAllCompleted(true);
         completeAllBtnElem.classList.add('checked');
     }else{
@@ -171,7 +171,11 @@ const updateTodo = (text, todoId) => {
     paintTodos();
 }
 
-
+const clearComplietedTodos =() => {
+    const newTodos = getActiveTodos();
+    setTodos(newTodos);
+    paintTodos();
+}
 
 
 const paintTodos = () => {
@@ -250,7 +254,7 @@ const init = () => {
     showAllBtnElem.addEventListener('click', onClickShowTodosType);
     showActiveBtnElem.addEventListener('click', onClickShowTodosType);
     showCompletedBtnElem.addEventListener('click', onClickShowTodosType);
-    //clearCompletedBtnElem.addEventListener('click', clearComplietedTodos);
+    clearCompletedBtnElem.addEventListener('click', clearComplietedTodos);
 
     completeAllBtnElem.addEventListener('click', onClickCompleteAll); // 전체완료 클릭 이벤트 리스너
     setLeftItems();
